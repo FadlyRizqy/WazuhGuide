@@ -85,11 +85,13 @@
 
   <!-- Tab Content -->
   <div class="tab-content bg-white shadow-sm p-4 rounded" id="wazuhTabContent">
+
+    
     <div class="tab-pane fade show active" id="instalasi" role="tabpanel">
       <!-- Konten Instalasi di sini -->
-      <h2>4.2 Instalasi Wazuh</h2>
+      <h2>Instalasi Wazuh</h2>
     <p><strong>Wazuh Server</strong> adalah komponen inti yang mengelola data dari endpoint.</p>
-    <h5>a. Instalasi Wazuh Server</h5>
+    <h5>1. Instalasi Wazuh Server</h5>
     <ol>
       <li>Instal curl:
         <pre><code>sudo apt install curl -y</code></pre>
@@ -97,13 +99,14 @@
       <li>Unduh dan jalankan installer:
         <pre><code>curl -sO https://packages.wazuh.com/4.7/wazuh-install.sh && sudo bash ./wazuh-install.sh -a</code></pre>
       </li>
-      <li>Catat informasi login dari output <code>INFO: — Summary —</code></li>
+      <li>Catat informasi login dari output <code>INFO: — Summary —</code>.</li>
       <li>Akses dashboard:
         <pre><code>https://&lt;wazuh-dashboard-ip&gt;</code></pre>
       </li>
     </ol>
 
-    <h5>b. Instalasi Wazuh Agent</h5>
+      
+    <h5>2. Instalasi Wazuh Agent</h5>
     <ol>
       <li>Tambahkan repo:
         <pre><code>curl -s https://packages.wazuh.com/key/GPG-KEY-WAZUH | gpg --no-default-keyring --keyring gnupg-ring:/usr/share/keyrings/wazuh.gpg --import
@@ -121,11 +124,13 @@ systemctl start wazuh-agent</code></pre>
       </li>
     </ol>
     </div>
+
+    
     <div class="tab-pane fade" id="konfigurasi" role="tabpanel">
       <!-- Konten Konfigurasi di sini -->
-      <h2>4.3 Konfigurasi Wazuh</h2>
+      <h2>A. Konfigurasi FIM pada Wazuh</h2>
 
-<h5>a. File Integrity Monitoring (FIM)</h5>
+<!-- <h5>1. File Integrity Monitoring (FIM)</h5> -->
 <p>
   File Integrity Monitoring (FIM) adalah fitur penting Wazuh untuk mendeteksi perubahan tidak sah pada file sistem, konfigurasi, atau file penting lainnya yang bisa menunjukkan aktivitas mencurigakan atau serangan.
 </p>
@@ -221,7 +226,9 @@ sudo systemctl restart wazuh-agent</code></pre>
     <pre><code>sudo systemctl restart wazuh-manager</code></pre>
   </li>
 </ol>
-    <h2>4.3b Integrasi Wazuh dengan Teler</h2>
+
+      
+    <h2>B. Integrasi Wazuh dengan Teler</h2>
 <p>
   <strong>Teler</strong> adalah HTTP Intrusion Detection System (IDS) ringan yang mendeteksi berbagai serangan web seperti HTML injection, file upload, dan directory traversal. Integrasi ini memungkinkan log teler dimonitor oleh Wazuh.
 </p>
@@ -286,7 +293,9 @@ logs:
     <pre><code>sudo systemctl restart wazuh-manager</code></pre>
   </li>
 </ol>
-    <h2>4.3c Integrasi Wazuh dengan Suricata</h2>
+
+      
+    <h2>C. Integrasi Wazuh dengan Suricata</h2>
 <p>
   <strong>Suricata</strong> adalah sistem deteksi intrusi jaringan (NIDS) yang mampu memantau lalu lintas jaringan secara real-time. Integrasi dengan Wazuh memungkinkan korelasi log yang lebih baik.
 </p>
@@ -378,16 +387,17 @@ sudo /var/ossec/bin/agent_groups -a -i &lt;AGENT_ID&gt; -g Suricata -q</code></p
     <pre><code>sudo systemctl restart wazuh-manager</code></pre>
   </li>
 </ol>
-    <h2>4.3d Integrasi Wazuh dengan Telegram</h2>
 
+      
+    <h2>D. Integrasi Wazuh dengan Telegram</h2>
 <p>
   Integrasi dengan <strong>Telegram</strong> memungkinkan Anda menerima notifikasi alert dari Wazuh secara real-time melalui bot yang dikonfigurasi.
 </p>
 
 <ol>
   <li><strong>Buat Telegram Bot</strong>
-    <p>Chat dengan <code>@BotFather</code> di Telegram:</p>
     <ul>
+      <li>Chat dengan <code>@BotFather</code> di Telegram:</li>
       <li>Ketik <code>/start</code> lalu <code>/newbot</code></li>
       <li>Masukkan nama dan username bot</li>
       <li>Simpan <strong>HTTP API token</strong> yang diberikan</li>
