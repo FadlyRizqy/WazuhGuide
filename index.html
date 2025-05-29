@@ -49,14 +49,14 @@
     <p class="lead mb-0">Dokumentasi teknis lengkap untuk instalasi dan konfigurasi Wazuh Security Information and Event Management (SIEM)</p>
   </div>
 </section>
-  <!-- Gambaran Umum Section -->
+<!-- Gambaran Umum Section -->
 <section class="bg-light py-4">
   <div class="container">
     <div class="bg-white border-start border-5 border-primary rounded shadow-sm p-4">
       <h5 class="fw-semibold mb-2"><span class="text-primary">&gt;_</span> Gambaran Umum</h5>
       <p class="mb-3">Wazuh adalah platform keamanan open-source yang menyediakan deteksi ancaman, monitoring integritas, respons insiden, dan compliance untuk berbagai environment.</p>
 
-      <div class="d-flex gap-3 flex-wrap">
+      <div class="d-flex gap-3 flex-wrap mb-3">
         <span class="badge rounded-pill bg-success">
           🧠 Wazuh Server
         </span>
@@ -64,6 +64,29 @@
           🛡️ Wazuh Agent
         </span>
       </div>
+
+      <!-- Accordion Referensi -->
+      <div class="accordion" id="referensiAccordion">
+        <div class="accordion-item border-0">
+          <h2 class="accordion-header" id="headingRef">
+            <button class="accordion-button collapsed bg-light text-primary fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRef" aria-expanded="false" aria-controls="collapseRef">
+              📚 Tampilkan Referensi Dokumentasi
+            </button>
+          </h2>
+          <div id="collapseRef" class="accordion-collapse collapse" aria-labelledby="headingRef" data-bs-parent="#referensiAccordion">
+            <div class="accordion-body">
+              <ul class="list-unstyled mb-0">
+                <li><a href="https://documentation.wazuh.com/current/quickstart.html" target="_blank">Wazuh Quickstart Guide</a></li>
+                <li><a href="https://wazuh.com/blog/detecting-web-attacks-using-wazuh-and-teler/" target="_blank">Detecting Web Attacks using Wazuh and Teler</a></li>
+                <li><a href="https://wazuh.com/blog/web-shell-attack-detection-with-wazuh/" target="_blank">Web Shell Attack Detection with Wazuh</a></li>
+                <li><a href="https://wazuh.com/blog/responding-to-network-attacks-with-suricata-and-wazuh-xdr/" target="_blank">Responding to Network Attacks with Suricata and Wazuh XDR</a></li>
+                <li><a href="https://medium.com/@bayusangkaya/integrasi-wazuh-alert-dengan-telegram-bot-dc162e3aa3" target="_blank">Integrasi Wazuh Alert dengan Telegram Bot</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- End Accordion -->
     </div>
   </div>
 </section>
@@ -90,7 +113,10 @@
     <div class="tab-pane fade show active" id="instalasi" role="tabpanel">
       <!-- Konten Instalasi di sini -->
       <h2>Instalasi Wazuh</h2>
-    <p><strong>Wazuh Server</strong> adalah komponen inti yang mengelola data dari endpoint.</p>
+    <p>
+  Instalasi Wazuh mencakup dua komponen utama: <strong>Wazuh Server</strong> dan <strong>Wazuh Agent</strong>. 
+  Wazuh Server berfungsi sebagai pusat pengelolaan dan analisis data keamanan dari seluruh endpoint, sementara Wazuh Agent adalah agen ringan yang terpasang pada sistem endpoint untuk mengumpulkan log dan aktivitas sistem, serta mengirimkannya ke server untuk dianalisis.
+</p>
     <h5>1. Instalasi Wazuh Server</h5>
     <ol>
       <li>Instal curl:
