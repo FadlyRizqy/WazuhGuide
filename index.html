@@ -70,7 +70,7 @@
         <div class="accordion-item border-0">
           <h2 class="accordion-header" id="headingRef">
             <button class="accordion-button collapsed bg-light text-primary fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRef" aria-expanded="false" aria-controls="collapseRef">
-              📚 Tampilkan Referensi Dokumentasi
+              📚 Referensi
             </button>
           </h2>
           <div id="collapseRef" class="accordion-collapse collapse" aria-labelledby="headingRef" data-bs-parent="#referensiAccordion">
@@ -103,6 +103,9 @@
     </li>
     <li class="nav-item" role="presentation">
       <button class="nav-link" id="simulasi-tab" data-bs-toggle="tab" data-bs-target="#simulasi" type="button" role="tab">Simulasi</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="glosarium-tab" data-bs-toggle="tab" data-bs-target="#glosarium" type="button" role="tab">Glosarium</button>
     </li>
   </ul>
 
@@ -497,9 +500,8 @@ sudo chmod 750 /var/ossec/integrations/custom-telegram*</code></pre>
   </li>
 </ol>
     </div>
+    
     <div class="tab-pane fade" id="simulasi" role="tabpanel">
-
-      
       <!-- Konten Simulasi di sini -->
       <h2>Simulasi Serangan</h2>
 <p>
@@ -548,6 +550,50 @@ sudo chmod 750 /var/ossec/integrations/custom-telegram*</code></pre>
   <img src="./webattack.png" class="img-fluid" alt="Web Attack Alert" />
 </ol>
     </div>
+    <!-- Tab Glosarium -->
+<div class="tab-pane fade" id="glosarium" role="tabpanel" aria-labelledby="glosarium-tab">
+  <h2>📘 Glosarium</h2>
+  <dl class="row mt-4">
+    <dt class="col-sm-3">Nikto</dt>
+    <dd class="col-sm-9">Alat pemindai web open-source yang digunakan untuk mengidentifikasi kerentanan keamanan pada server web.</dd>
+
+    <dt class="col-sm-3">Endpoint</dt>
+    <dd class="col-sm-9">Perangkat apa pun yang terhubung ke jaringan, seperti komputer, smartphone, atau tablet, yang dapat menjadi titik akhir komunikasi.</dd>
+
+    <dt class="col-sm-3">Active Response</dt>
+    <dd class="col-sm-9">Fitur dalam Wazuh yang secara otomatis merespons ancaman keamanan dengan tindakan seperti memblokir atau mengkarantina ancaman.</dd>
+
+    <dt class="col-sm-3">Firewall-drop</dt>
+    <dd class="col-sm-9">Tindakan yang dilakukan oleh firewall untuk menolak atau memblokir paket data yang mencurigakan atau tidak diinginkan.</dd>
+
+    <dt class="col-sm-3">Probe</dt>
+    <dd class="col-sm-9">Upaya atau alat untuk mengumpulkan informasi tentang jaringan atau sistem untuk tujuan analisis atau deteksi kerentanan.</dd>
+
+    <dt class="col-sm-3">Nmap</dt>
+    <dd class="col-sm-9">Alat pemindaian jaringan open-source yang digunakan untuk menemukan perangkat dan layanan pada jaringan serta untuk audit keamanan.</dd>
+
+    <dt class="col-sm-3">Netcat</dt>
+    <dd class="col-sm-9">Alat jaringan yang digunakan untuk membaca dan menulis data melalui koneksi jaringan menggunakan protokol TCP atau UDP.</dd>
+
+    <dt class="col-sm-3">Reverse-shell</dt>
+    <dd class="col-sm-9">Metode serangan di mana penyerang mendapatkan akses ke shell sistem target dengan membalikkan koneksi dari target ke penyerang.</dd>
+
+    <dt class="col-sm-3">Decoder</dt>
+    <dd class="col-sm-9">Komponen dalam sistem keamanan yang menganalisis dan menerjemahkan data log atau pesan untuk memudahkan pemahaman dan respon.</dd>
+
+    <dt class="col-sm-3">IDS (Intrusion Detection System)</dt>
+    <dd class="col-sm-9">Sistem yang memantau jaringan atau sistem untuk aktivitas mencurigakan atau pelanggaran kebijakan keamanan dan mengirimkan peringatan jika ditemukan.</dd>
+
+    <dt class="col-sm-3">Webshell Attack</dt>
+    <dd class="col-sm-9">Simulasi serangan ini mencoba menyisipkan webshell untuk melihat apakah Wazuh dapat mendeteksi dan merespons upaya ini.</dd>
+
+    <dt class="col-sm-3">Nmap Scan</dt>
+    <dd class="col-sm-9">Simulasi ini melakukan pemindaian jaringan menggunakan Nmap untuk menguji apakah Wazuh dapat mendeteksi aktivitas pemindaian.</dd>
+
+    <dt class="col-sm-3">Web Attack</dt>
+    <dd class="col-sm-9">Serangan ini melibatkan berbagai teknik serangan web untuk menguji kemampuan Wazuh dalam mendeteksi dan merespons terhadap aplikasi web.</dd>
+  </dl>
+</div>    
   </div>
 </div>
   </div>
