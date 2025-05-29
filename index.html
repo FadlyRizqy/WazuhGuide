@@ -462,13 +462,15 @@ sudo chmod 750 /var/ossec/integrations/custom-telegram*</code></pre>
 </ol>
     </div>
     <div class="tab-pane fade" id="simulasi" role="tabpanel">
+
+      
       <!-- Konten Simulasi di sini -->
-      <h2>4.4 Simulasi Serangan</h2>
+      <h2>Simulasi Serangan</h2>
 <p>
   Untuk menguji integrasi dan deteksi, berikut simulasi serangan umum: webshell, port scanning (Nmap), dan serangan web menggunakan Nikto.
 </p>
 
-<h5>a. Webshell Attack</h5>
+<h5>1. Webshell Attack</h5>
 <ol>
   <li>Buat file:
     <pre><code>touch /var/www/html/webshell-script.php</code></pre>
@@ -490,31 +492,31 @@ sudo chmod 750 /var/ossec/integrations/custom-telegram*</code></pre>
 
 </ol>
 
-<h5>b. Nmap Scan</h5>
+<h5>2. Nmap Scan</h5>
 <ol>
   <li>Jalankan dari Kali Linux:
     <pre><code>sudo nmap -sS --script=vuln &lt;AGENT_IP&gt;</code></pre>
   </li>
-  <li>IP akan diblokir otomatis oleh active-response Wazuh selama 3 menit</li>
+  <li>IP akan diblokir otomatis oleh active-response Wazuh selama 3 menit.</li>
   <li>Lihat alert di dashboard:</li>
   <img src="./nmap.png" class="img-fluid" alt="Nmap Scan Alert" />
 </ol>
 
-<h5>c. Web Attack (Nikto)</h5>
+<h5>3. Web Attack (Nikto)</h5>
 <ol>
   <li>Jalankan:
     <pre><code>nikto -h http://&lt;AGENT_IP&gt;/</code></pre>
   </li>
-  <li>Log akan dianalisis oleh Wazuh atau Teler</li>
+  <li>Log akan dianalisis oleh Wazuh atau Teler.</li>
   <li>Lihat alert web attack:</li>
   <img src="./webattack.png" class="img-fluid" alt="Web Attack Alert" />
 </ol>
     </div>
   </div>
 </div>
-<!--    -->
   </div>
 
+<!--  Footer  -->
   <footer class="text-center text-muted mt-5 mb-3">
     &copy; 2025 Panduan Wazuh SIEM
   </footer>
