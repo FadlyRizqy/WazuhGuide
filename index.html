@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Panduan Wazuh SIEM</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f9fafb;
+      color: #111827;
+    }
+    header {
+      background-color: #1e40af;
+      color: white;
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+    nav {
+      background: #e0e7ff;
+      padding: 0.5rem;
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    nav button {
+      background: #2563eb;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+    nav button:hover {
+      background: #1d4ed8;
+    }
+    main {
+      max-width: 960px;
+      margin: 2rem auto;
+      padding: 1.5rem;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    }
+    h2, h3 {
+      color: #1e3a8a;
+    }
+    pre {
+      background-color: #f3f4f6;
+      border-left: 4px solid #3b82f6;
+      padding: 1rem;
+      overflow-x: auto;
+      border-radius: 5px;
+    }
+    code {
+      font-family: monospace;
+    }
+    .section {
+      display: none;
+    }
+    .section.active {
+      display: block;
+      animation: fadeIn 0.4s ease-in;
+    }
+    @keyframes fadeIn {
+      from {opacity: 0;}
+      to {opacity: 1;}
+    }
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.9rem;
+      color: #6b7280;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Panduan Instalasi & Konfigurasi Wazuh</h1>
+    <p>SIEM + FIM + Integrasi Teler, Suricata & Telegram</p>
+  </header>
+
+  <nav>
+    <button onclick="showSection('intro')">Pendahuluan</button>
+    <button onclick="showSection('install')">Instalasi</button>
+    <button onclick="showSection('fim')">FIM</button>
+    <button onclick="showSection('teler')">Teler</button>
+    <button onclick="showSection('suricata')">Suricata</button>
+    <button onclick="showSection('telegram')">Telegram</button>
+    <button onclick="showSection('simulasi')">Simulasi</button>
+  </nav>
+
+  <main>
+    <div id="intro" class="section active">
+      <h2>Pendahuluan</h2>
+      <p>Wazuh adalah platform keamanan open-source untuk mendeteksi dan merespons ancaman, menganalisis log, serta mengintegrasikan berbagai tool keamanan lainnya. Panduan ini disusun untuk membantu siapa saja membangun sistem keamanan berbasis Wazuh yang kuat.</p>
+    </div>
+
+    <div id="install" class="section">
+      <h2>Instalasi Wazuh Server & Agent</h2>
+      <pre><code># Server
+curl -sO https://packages.wazuh.com/4.7/wazuh-install.sh && sudo bash ./wazuh-install.sh -a
+
+# Agent Ubuntu
+curl -s https://packages.wazuh.com/key/GPG-KEY-WAZUH | gpg --no-default-keyring --keyring gnupg-ring:/usr/share/keyrings/wazuh.gpg --import
+echo "deb [signed-by=/usr/share/keyrings/wazuh.gpg] https://packages.wazuh.com/4.x/apt/ stable main" | tee -a /etc/apt/sources.list.d/wazuh.list
+apt-get update
+WAZUH_MANAGER="IP_ADDRESS" apt-get install wazuh-agent
+systemctl start wazuh-agent
+      </code></pre>
+    </div>
+
+    <div id="fim" class="section">
+      <h2>File Integrity Monitoring (FIM)</h2>
+      <p>FIM digunakan untuk mendeteksi perubahan tak sah pada file atau folder sistem.</p>
+      <pre><code>&lt;directories realtime="yes" check_all="yes" report_changes="yes"&gt;/var/www/html&lt;/directories&gt;</code></pre>
+    </div>
+
+    <div id="teler" class="section">
+      <h2>Integrasi dengan Teler</h2>
+      <p>Teler adalah IDS HTTP ringan. Digunakan bersama Wazuh untuk mendeteksi serangan web berbasis signature.</p>
+      <pre><code># Unduh dan konfigurasi
+wget https://github.com/kitabisa/teler/releases/download/...tar.gz
+tar -xvzf ...
+mv teler.example.yaml teler.yaml
+tail -f /var/log/apache2/access.log | ./teler -c teler.yaml
+      </code></pre>
+    </div>
+
+    <div id="suricata" class="section">
+      <h2>Integrasi dengan Suricata</h2>
+      <p>Suricata memberikan deteksi dan pencegahan serangan jaringan (NIDS/IPS). Konfigurasi log JSON dan integrasikan ke Wazuh:</p>
+      <pre><code>&lt;localfile&gt;
+  &lt;log_format&gt;json&lt;/log_format&gt;
+  &lt;location&gt;/var/log/suricata/eve.json&lt;/location&gt;
+&lt;/localfile&gt;
+      </code></pre>
+    </div>
+
+    <div id="telegram" class="section">
+      <h2>Integrasi dengan Telegram</h2>
+      <p>Gunakan bot Telegram untuk menerima alert secara langsung:</p>
+      <ul>
+        <li>Buat bot via <code>@BotFather</code></li>
+        <li>Dapatkan Group ID dari <code>@myidbot</code></li>
+        <li>Tambahkan skrip Python untuk kirim pesan</li>
+      </ul>
+    </div>
+
+    <div id="simulasi" class="section">
+      <h2>Simulasi Serangan</h2>
+      <ul>
+        <li><strong>Webshell</strong>: Upload skrip reverse shell ke webserver dan pantau dari netcat.</li>
+        <li><strong>Nmap Scan</strong>: Jalankan <code>nmap -sS --script=vuln</code> ke endpoint Wazuh Agent.</li>
+        <li><strong>Web Attack</strong>: Jalankan <code>nikto</code> untuk simulasi serangan aplikasi web.</li>
+      </ul>
+    </div>
+  </main>
+
+  <footer>
+    &copy; 2025 Panduan Wazuh SIEM. Dibuat untuk pembelajaran dan praktik keamanan siber.
+  </footer>
+
+  <script>
+    function showSection(id) {
+      document.querySelectorAll(".section").forEach(el => el.classList.remove("active"));
+      document.getElementById(id).classList.add("active");
+    }
+  </script>
+</body>
+</html>
